@@ -48,6 +48,8 @@ pro plotsed1,name,chisq_max=chisq_show_max
   fileout=dirout+'/'+name+'.plotsed.modelrange.eps'
   
   readcol,fileinput,nfilt,ndis,dump,format='(I,I,I)',skipline=1,numline=1,/silent
+  nfilt=nfilt(0)
+  ndis=ndis(0)
   readcol,fileinput,filt_arr,filt_wav_arr,flux_arr,flux_nufnu_arr,errup_arr,errlo_arr,errop_arr,limit_arr,format='(A,F,F,F,F,F,I,I)',skipline=4,numline=nfilt,/silent
   
   readcol,'../Model_SEDs/parfiles/kmh.par',klam,junk1,junk2,kkap,/silent

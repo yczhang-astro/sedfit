@@ -109,7 +109,8 @@ pro plotchisq2,name,xwav_arr,ywav_arr,chisq_max=chisq_show_max,nxp=nxp,nyp=nyp
   ndis=sxpar(head,'NAXIS5')
   nfilt=sxpar(head,'NAXIS6')
   
-  readcol,filein3,nfilt1,dump,dump,skipline=1,numline=1,/silent
+  readcol,filein3,nfilt1,dump,dump,format='(I,I,I)',skipline=1,numline=1,/silent
+  nfilt1=nfilt1(0)
   readcol,filein3,filt_arr,filt_wav_arr,flux_obs_arr,flux_nufnu_obs_arr,errup_arr,errlo_arr,errop_arr,limit_arr,format='(A,F,F,F,F,F,I,I)',skipline=4,numline=nfilt1,/silent
   if nfilt1 ne nfilt then begin
      print,'nfilt wrong'
