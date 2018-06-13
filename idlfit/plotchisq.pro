@@ -109,8 +109,13 @@ pro plotchisq,name,chisq_max=chisq_show_max
            chisq_min_temp=min(chisq_arr(imc-1,isigma-1,ims-1,*,*))
            chisq_arr1(imc-1,isigma-1,ims-1)=chisq_min_temp
            a=where(chisq_arr(imc-1,isigma-1,ims-1,*,*) eq chisq_min_temp)
-           chisqmu_arr(imc-1,isigma-1,ims-1)=mu_arr(a(0))
-           avchisq_arr1(imc-1,isigma-1,ims-1)=avchisq_arr(imc-1,isigma-1,ims-1,a(0))
+           index_cube=array_indices(chisq_arr(imc-1,isigma-1,ims-1,*,*),a(0))
+           chisqmu_arr(imc-1,isigma-1,ims-1)=mu_arr(index_cube(3))
+           if n_elements(index_cube) eq 4 then begin
+              avchisq_arr1(imc-1,isigma-1,ims-1)=avchisq_arr(imc-1,isigma-1,ims-1,index_cube(3))
+           endif else begin
+              avchisq_arr1(imc-1,isigma-1,ims-1)=avchisq_arr(imc-1,isigma-1,ims-1,index_cube(3),index_cube(4))
+           endelse
            if chisq_min_temp eq -1. then begin
               chisqmu_arr(imc-1,isigma-1,ims-1)=-1.
            endif

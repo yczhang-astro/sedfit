@@ -6,7 +6,7 @@ sourcename='example'
 filt_arr=['I1','I2','I3','I4','F8','L1','L4','P1','P3','P5','P6']
 filt_wav_arr=[3.6, 4.5, 5.8, 8., 19.7, 31.5, 37.1, 70, 160, 350, 500]
 flux_arr=[0.497, 1.24, 1.84, 3.22, 68.18, 552.8, 1192.5, 2627.6, 2385.6, 428.6, 127.4]
-errup=[0.216, 0.1, 0.434, 0.522, 0.18, 0.1, 0.1, 0.1, 0.176, 0.387, 0.536]
+errup=[0.216, 0.1, 0.434, 0.522, 0.18, 0.1, 0.1, 0.1, 0.176, 0.387, 0.536]; relative errors
 errlo=errup
 limit=[1,1,0,0,0,0,0,0,0,1,1]
 
@@ -36,7 +36,7 @@ yfilt_arr=['L4', 'P3', 'L4', 'P1', 'L4', 'P5']
 ;;===============================================================
 ;; prepare the subroutines
 
-!PATH=!PATH+':'+EXPAND_PATH('+lib')
+!PATH=EXPAND_PATH('+lib')+':'+!PATH
 RESOLVE_ROUTINE,'chisq'
 RESOLVE_ROUTINE,'bestmodel'
 RESOLVE_ROUTINE,'plotsed'

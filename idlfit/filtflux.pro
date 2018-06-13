@@ -84,7 +84,7 @@ for imc=1,nmc do begin
             filename=suffix+'.dat'
             if (file_test(dirin+filename) eq 1) then begin
                
-               readcol,dirin+filename,lambda_arr,I_arr,I_err_arr,/silent
+               readcol,dirin+filename,lambda_arr,I_arr,/silent
 
                I_arr1=interpol(I_arr,lambda_arr,fwave)
                I_arr1=I_arr1/3.e14*fwave
