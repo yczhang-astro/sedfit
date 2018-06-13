@@ -77,7 +77,7 @@ pro bestmodel,name,THRESOPTION=thresop,NMODEL=nmodel,NFULLMODEL=nmodel_full,CHIS
   openw,1,fileout
   printf,1,'model No., SED No., chisq, chisq(non-limit), mc (msun), Sigma (g/cm^2), ms (msun), mu (deg), dis (pc), av, rcore (AU), menv (msun), theta_w (deg), rstar (rsun), lstar (lsun), tstar (K), mdisk (msun), rdisk (AU), mdotd (msun/yr), ltot (Lsun), ltot_inc (Lsun), ltot_av (Lsun), tnow (yr)'
   imodel=1
-  for imodel=1,nmodel_all do begin
+  for imodel=1l,nmodel_all do begin
      if thresop eq 1 and imodel gt nmodel then break
      if thresop eq 2 and chisq(imodel-1) gt chisq_min then break
      printf,1,strtrim(string(modelno(imodel-1)),2)+' '+sedno(imodel-1),chisq(imodel-1),chisq_nonlimit(imodel-1),mcore(imodel-1),sigma(imodel-1),$
@@ -94,7 +94,7 @@ pro bestmodel,name,THRESOPTION=thresop,NMODEL=nmodel,NFULLMODEL=nmodel_full,CHIS
   openw,1,fileout_full
   printf,1,'model No., SED No., chisq, chisq(non-limit), mc (msun), Sigma (g/cm^2), ms (msun), mu (deg), dis (pc), av, rcore (AU), menv (msun), theta_w (deg), rstar (rsun), lstar (lsun), tstar (K), mdisk (msun), rdisk (AU), mdotd (msun/yr), ltot (Lsun), ltot_inc (Lsun), ltot_av (Lsun), tnow (yr)'
   imodel=1
-  for imodel=1,nmodel_all do begin
+  for imodel=1l,nmodel_all do begin
      if thresop eq 1 and imodel gt nmodel_full then break
      if thresop eq 2 and chisq(imodel-1) gt chisq_min then break
      printf,1,strtrim(string(modelno(imodel-1)),2)+' '+sedno(imodel-1),chisq(imodel-1),chisq_nonlimit(imodel-1),mcore(imodel-1),sigma(imodel-1),$

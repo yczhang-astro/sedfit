@@ -224,7 +224,7 @@ pro chisq,name,filt_arr,filt_wav_arr,flux_arr,errup,$
         dis_arr=[dis]
      endif else begin
         dis_max=dis+dis_err
-        dis_min=dis_dis_err
+        dis_min=dis-dis_err
         if dis_min le 0. then begin
            print,''
            print,'dis_min less than 0, resetting it to dis/10'
@@ -275,6 +275,12 @@ pro chisq,name,filt_arr,filt_wav_arr,flux_arr,errup,$
   endfor
   close,1
 
+  a=where(finite(flux_arr) eq 0 or finite(errup_arr) eq 0 or finite(errlo_arr) eq 0)
+  if a(0) ge 0 then begin
+     print,'Input flux/error contains INF or NAN, please check!'
+     stop
+  endif
+
 ;;===============================================================
 
 
@@ -293,6 +299,7 @@ pro chisq,name,filt_arr,filt_wav_arr,flux_arr,errup,$
    
 ;; This is opacity file for the foreground extinction
   readcol,'../Model_SEDs/parfiles/kmh.par',klam,junk1,junk2,kkap,/silent
+  kapv=interpol(kkap,klam,0.55)                    
 
 ;; initializing some arrays
   chisq_arr=fltarr(nmc,nsigma,nms,nmu,ndis)
@@ -342,6 +349,8 @@ pro chisq,name,filt_arr,filt_wav_arr,flux_arr,errup,$
                  nfit=n_elements(flux_arr1); number of data points to fit, including upper/lower limits
                  filt_wav_fit_arr=filt_wav_arr1
 
+                 kap_fit_arr=interpol(kkap,klam,filt_wav_fit_arr) ;; foreground opacities at those wavelengths
+
                  flux_fit_log_arr=fltarr(nfit); observed fluxes in log used to fit
                  errup_fit_log_arr=fltarr(nfit); observed upper error in log used to fit
                  errlo_fit_log_arr=fltarr(nfit) ; observed lower error in log used to fit
@@ -382,10 +391,7 @@ pro chisq,name,filt_arr,filt_wav_arr,flux_arr,errup,$
                     modelflux_arr1=filtflux1*fnorm                          ; now in erg/s/cm^2. it was in lsun
                     modelflux_arr1=modelflux_arr1/3.e14*filt_wav_arr1*1.e23 ; now in Jy
                     modelflux_fit_log_arr=alog10(modelflux_arr1)
-                    
-                    kap_fit_arr=interpol(kkap,klam,filt_wav_fit_arr) ;; foreground opacities at those wavelengths
-                    kapv=interpol(kkap,klam,0.55)                    
-                                        
+                                                          
                     for iav=1,nav do begin ; searching the best Av for particular set of (mc, sigma, ms, mu, dis)
                        
                        av=av_arr(iav-1)
@@ -476,7 +482,7 @@ pro chisq,name,filt_arr,filt_wav_arr,flux_arr,errup,$
   
   chisq_max=max(chisq_arr)
   a=where(chisq_arr lt 0.)
-  if a(0) ge 0 then chisq_arr(a)=chisq_max+10.
+  if a(0) ge 0 then chisq_arr(a)=chisq_max*2.
 
   fileout=dirout+'/'+name+'.output.allmodel.parameter.dat'
   fileout_full=dirout+'/'+name+'.output.allmodel.full.parameter.dat'
@@ -486,11 +492,12 @@ pro chisq,name,filt_arr,filt_wav_arr,flux_arr,errup,$
   openw,1,fileout
   openw,2,fileout_full
 
-  imodel=1
-  imodel_full=1
+  imodel=1l
+  imodel_full=1l
   repeatcheck_arr=intarr(imc,isigma,ims)
   chisq_min=chisq_arr(index_sort(0))
-  for ii=0,n_elements(index_sort)-1 do begin
+  n_index_sort=n_elements(index_sort)
+  for ii=0l,n_index_sort-1 do begin
 
      index=index_sort(ii)
      chisq=chisq_arr(index)
@@ -536,7 +543,6 @@ pro chisq,name,filt_arr,filt_wav_arr,flux_arr,errup,$
      ltot_inc=tsum(nu_arr,I_arr/nu_arr)
      
      kap_arr=interpol(kkap,klam,lambda_arr)
-     kapv=interpol(kkap,klam,0.55)
      I_arr=I_arr*10.^(-0.4*av*kap_arr/kapv)
      ltot_av=tsum(nu_arr,I_arr/nu_arr)
      

@@ -168,16 +168,16 @@ pro plotsed,name
      
      loadcolors
      a=where(limit_arr eq 0)
-     plotsym,8,0.5
+     plotsym,8,0.5,/FILL
      plots,filt_wav_arr,flux_plot_arr,psym=8,color=5
      oploterror,filt_wav_arr(a),flux_plot_arr(a),errup_plot_arr(a),errthick=2,psym=3,errcolor=5,/hibar
      oploterror,filt_wav_arr(a),flux_plot_arr(a),errlo_plot_arr(a),errthick=2,psym=3,errcolor=5,/lobar
      
-     a=where(errup_arr gt 0.1 or errlo_arr gt 0.1 or limit_arr eq 0)
-     if a(0) ge 0 then begin
-        plotsym,8,0.5,/FILL
-        plots,filt_wav_arr(a),flux_plot_arr(a),psym=8,color=5
-     endif
+     ;; a=where(errup_arr gt 0.1 or errlo_arr gt 0.1 or limit_arr eq 0)
+     ;; if a(0) ge 0 then begin
+     ;;    plotsym,8,0.5,/FILL
+     ;;    plots,filt_wav_arr(a),flux_plot_arr(a),psym=8,color=5
+     ;; endif
   
      ;; plot the upper and lower limits
      a=where(limit_arr eq 1)
